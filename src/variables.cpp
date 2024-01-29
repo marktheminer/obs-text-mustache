@@ -26,20 +26,24 @@ bool VariablesAndValues::contains(const QString &variable)
 	return variables.find(variable) != variables.end();
 }
 
-void VariablesAndValues::putValue(const QString& variable, const QString& value) {
+void VariablesAndValues::putValue(const QString &variable, const QString &value)
+{
 	variablesAndValues[variable] = value;
 	variables.insert(variable);
 }
 
-const set<QString>& VariablesAndValues::getVariables() {
+const set<QString> &VariablesAndValues::getVariables()
+{
 	return variables;
 }
 
-const QString& VariablesAndValues::getValue(const QString& variable) {
-	 return variablesAndValues[variable];
+const QString &VariablesAndValues::getValue(const QString &variable)
+{
+	return variablesAndValues[variable];
 }
 
-void VariablesAndValues::clear() {
-	 variablesAndValues.clear();
-	 variables.clear();
+void VariablesAndValues::clear()
+{
+	variablesAndValues.clear();
+	variables.clear();
 }

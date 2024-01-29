@@ -24,8 +24,6 @@ public slots:
 	void ShowDialog();
 	void HideDialog();
 
-
 private:
 	std::map<QString, QLineEdit *> textLines;
-
 };

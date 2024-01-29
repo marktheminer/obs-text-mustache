@@ -27,7 +27,6 @@ OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 void InitOBSTextMustacheDefinitions();
 void FreeOBSTextMustacheDefinitions();
 
-
 bool obs_module_load(void)
 {
 	InitOBSTextMustacheDefinitions();
