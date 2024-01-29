@@ -27,15 +27,11 @@ if(ENABLE_QT)
   target_compile_options(
     ${CMAKE_PROJECT_NAME} PRIVATE $<$<C_COMPILER_ID:Clang,AppleClang>:-Wno-quoted-include-in-framework-header
                                   -Wno-comma>)
-  set_target_properties(
-    ${CMAKE_PROJECT_NAME}
-    PROPERTIES AUTOMOC ON
-               AUTOUIC_SEARCH_PATHS forms
-               AUTOUIC ON
-               AUTORCC ON)
+  set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES AUTOMOC ON AUTOUIC_SEARCH_PATHS forms AUTOUIC ON AUTORCC ON)
 endif()
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE forms/obs-text-mustache-definitions.ui)
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-main.c src/variables.cpp src/obs-text.cpp src/obs-text-mustache-definitions.cpp)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-main.c src/variables.cpp src/obs-text.cpp
+                                             src/obs-text-mustache-definitions.cpp)
 
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})
