@@ -82,25 +82,25 @@ runs:
 
         .github/scripts/Build-Windows.ps1 @BuildArgs
 
-    - name: Create Summary 📊
-      if: contains(fromJSON('["Linux", "macOS"]'),runner.os)
-      shell: zsh --no-rcs --errexit --pipefail {0}
-      env:
-        CCACHE_CONFIGPATH: ${{ inputs.workingDirectory }}/.ccache.conf
-      run: |
-        : Create Summary 📊
-
-        local -a ccache_data
-        if (( ${+RUNNER_DEBUG} )) {
-          setopt XTRACE
-          ccache_data=("${(fA)$(ccache -s -vv)}")
-        } else {
-          ccache_data=("${(fA)$(ccache -s)}")
-        }
-
-        print '### ${{ runner.os }} Ccache Stats (${{ inputs.target }})' >> $GITHUB_STEP_SUMMARY
-        print '```' >> $GITHUB_STEP_SUMMARY
-        for line (${ccache_data}) {
-          print ${line} >> $GITHUB_STEP_SUMMARY
-        }
-        print '```' >> $GITHUB_STEP_SUMMARY
+#    - name: Create Summary 📊
+#      if: contains(fromJSON('["Linux", "macOS"]'),runner.os)
+#      shell: zsh --no-rcs --errexit --pipefail {0}
+#      env:
+#        CCACHE_CONFIGPATH: ${{ inputs.workingDirectory }}/.ccache.conf
+#      run: |
+#        : Create Summary 📊
+#
+#        local -a ccache_data
+#        if (( ${+RUNNER_DEBUG} )) {
+#          setopt XTRACE
+#          ccache_data=("${(fA)$(ccache -s -vv)}")
+#        } else {
+#          ccache_data=("${(fA)$(ccache -s)}")
+#        }
+#
+#        print '### ${{ runner.os }} Ccache Stats (${{ inputs.target }})' >> $GITHUB_STEP_SUMMARY
+#        print '```' >> $GITHUB_STEP_SUMMARY
+#        for line (${ccache_data}) {
+#          print ${line} >> $GITHUB_STEP_SUMMARY
+#        }
+#        print '```' >> $GITHUB_STEP_SUMMARY
