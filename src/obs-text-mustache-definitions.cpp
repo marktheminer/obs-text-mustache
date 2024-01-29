@@ -23,7 +23,6 @@ OBSTextMustacheDefinitions *dialog;
 
 const wregex variable_regex(L"\\{\\{(\\w+)\\}\\}");
 
-
 static bool findVariables(void *data, obs_source_t *source)
 {
 	VariablesAndValues *variablesAndValues =
@@ -39,27 +38,23 @@ static bool findVariables(void *data, obs_source_t *source)
 		     QString::fromStdWString(mySource->text)
 			     .toStdString()
 			     .c_str());
-		const auto variables_begin = wsregex_iterator(mySource->text.begin(),
-							mySource->text.end(),
-							variable_regex);
+		const auto variables_begin =
+			wsregex_iterator(mySource->text.begin(),
+					 mySource->text.end(), variable_regex);
 		const auto variables_end = wsregex_iterator();
 		for (wsregex_iterator i = variables_begin; i != variables_end;
 		     ++i) {
 			const wsmatch match = *i;
 			const wstring match_str = match.str(1);
-			const QString variable = QString::fromStdWString(match_str);
+			const QString variable =
+				QString::fromStdWString(match_str);
 			blog(LOG_DEBUG,
 			     "findVariables: found variable %s in the scene",
-			     variable
-				     .toStdString()
-				     .c_str());
-			if (!variablesAndValues->contains(
-				    variable)) {
+			     variable.toStdString().c_str());
+			if (!variablesAndValues->contains(variable)) {
 				blog(LOG_DEBUG,
 				     "findVariables: adding variable %s",
-				     variable
-					     .toStdString()
-					     .c_str());
+				     variable.toStdString().c_str());
 				variablesAndValues->putVariable(variable);
 			}
 		}
@@ -78,7 +73,8 @@ static bool updateText(void *data, obs_source_t *source)
 	return true;
 }
 
-static void loadVariablesAndValues(obs_data_t* data, void* param) {
+static void loadVariablesAndValues(obs_data_t *data, void *param)
+{
 	VariablesAndValues *const variablesAndValues =
 		VariablesAndValues::getInstance();
 	const auto variables = variablesAndValues->getVariables();
@@ -134,15 +130,14 @@ void OBSTextMustacheDefinitions::ShowDialog()
 
 void OBSTextMustacheDefinitions::HideDialog()
 {
-	VariablesAndValues * const variablesAndValues =
+	VariablesAndValues *const variablesAndValues =
 		VariablesAndValues::getInstance();
 
 	setVisible(false);
 	const auto variables = variablesAndValues->getVariables();
 	for (auto it = variables.begin(); it != variables.end(); ++it) {
 		const auto variable = *it;
-		const auto value =
-			textLines[*it]->text();
+		const auto value = textLines[*it]->text();
 		variablesAndValues->putValue(variable, value);
 		blog(LOG_DEBUG, "HideDialog: Setting variable %s to %s",
 		     variable.toStdString().c_str(),
@@ -156,7 +151,7 @@ void OBSTextMustacheDefinitions::HideDialog()
 static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 					   void *)
 {
-	VariablesAndValues * const variablesAndValues =
+	VariablesAndValues *const variablesAndValues =
 		VariablesAndValues::getInstance();
 	if (saving) {
 		const OBSDataAutoRelease obj = obs_data_create();
@@ -165,15 +160,16 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 		for (auto it = variables.begin(); it != variables.end(); ++it) {
 			const QString variable = *it;
 			const QString value = variablesAndValues->getValue(*it);
-			blog(LOG_DEBUG, "SaveOBSTextMustacheDefinitions: Considering saving variable %s",
+			blog(LOG_DEBUG,
+			     "SaveOBSTextMustacheDefinitions: Considering saving variable %s",
 			     variable.toStdString().c_str());
 			if (value.size() > 0) {
-				const OBSDataAutoRelease keyValue = obs_data_create();
-				blog(LOG_DEBUG, "SaveOBSTextMustacheDefinitions: Saving variable %s as %s",
+				const OBSDataAutoRelease keyValue =
+					obs_data_create();
+				blog(LOG_DEBUG,
+				     "SaveOBSTextMustacheDefinitions: Saving variable %s as %s",
 				     variable.toStdString().c_str(),
-				     value
-					     .toStdString()
-					     .c_str());
+				     value.toStdString().c_str());
 				obs_data_set_string(
 					keyValue, "variable",
 					variable.toStdString().c_str());
@@ -183,15 +179,15 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 
 				obs_data_array_push_back(array, keyValue);
 
-				blog(LOG_DEBUG, "SaveOBSTextMustacheDefinitions: Done saving variable %s as %s",
+				blog(LOG_DEBUG,
+				     "SaveOBSTextMustacheDefinitions: Done saving variable %s as %s",
 				     variable.toStdString().c_str(),
-				     value
-					     .toStdString()
-					     .c_str());
+				     value.toStdString().c_str());
 			}
 		}
 		obs_data_set_array(obj, "variablesAndValues", array);
-		blog(LOG_DEBUG, "SaveOBSTextMustacheDefinitions: About to save data");
+		blog(LOG_DEBUG,
+		     "SaveOBSTextMustacheDefinitions: About to save data");
 		obs_data_set_obj(save_data, "obs-text-mustache", obj);
 		blog(LOG_DEBUG,
 		     "SaveOBSTextMustacheDefinitions: Done saving data");
@@ -233,7 +229,8 @@ extern "C" void InitOBSTextMustacheDefinitions()
 
 	obs_frontend_push_ui_translation(obs_module_get_string);
 
-	QMainWindow *const window = (QMainWindow *)obs_frontend_get_main_window();
+	QMainWindow *const window =
+		(QMainWindow *)obs_frontend_get_main_window();
 
 	dialog = new OBSTextMustacheDefinitions(window);
 

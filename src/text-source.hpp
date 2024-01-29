@@ -14,8 +14,6 @@
 using namespace std;
 using namespace Gdiplus;
 
-
-
 enum class Align {
 	Left,
 	Center,
@@ -27,7 +25,6 @@ enum class VAlign {
 	Center,
 	Bottom,
 };
-
 
 template<typename T, typename T2, BOOL WINAPI deleter(T2)> class GDIObj {
 	T obj = nullptr;
@@ -56,7 +53,6 @@ public:
 	inline bool operator==(T obj_) const { return obj == obj_; }
 	inline bool operator!=(T obj_) const { return obj != obj_; }
 };
-
 
 using HDCObj = GDIObj<HDC, HDC, DeleteDC>;
 using HFONTObj = GDIObj<HFONT, HGDIOBJ, DeleteObject>;

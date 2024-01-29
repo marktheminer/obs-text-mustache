@@ -322,16 +322,17 @@ void TextSource::CalculateTextSizes(const StringFormat &format,
 				layout_box.Height -= outline_size;
 			}
 
-			stat = graphics.MeasureString(text_to_render.c_str(),
-						      (int)text_to_render.size() + 1,
-						      font.get(), layout_box,
-						      &format, &bounding_box);
+			stat = graphics.MeasureString(
+				text_to_render.c_str(),
+				(int)text_to_render.size() + 1, font.get(),
+				layout_box, &format, &bounding_box);
 			warn_stat("MeasureString (wrapped)");
 
 			temp_box = bounding_box;
 		} else {
 			stat = graphics.MeasureString(
-				text_to_render.c_str(), (int)text_to_render.size() + 1, font.get(),
+				text_to_render.c_str(),
+				(int)text_to_render.size() + 1, font.get(),
 				PointF(0.0f, 0.0f), &format, &bounding_box);
 			warn_stat("MeasureString (non-wrapped)");
 
@@ -462,17 +463,18 @@ void TextSource::RenderText()
 			GraphicsPath path;
 
 			font->GetFamily(&family);
-			stat = path.AddString(text_to_render.c_str(), (int)text_to_render.size(),
+			stat = path.AddString(text_to_render.c_str(),
+					      (int)text_to_render.size(),
 					      &family, font->GetStyle(),
 					      font->GetSize(), box, &format);
 			warn_stat("path.AddString");
 
 			RenderOutlineText(graphics_bitmap, path, brush);
 		} else {
-			stat = graphics_bitmap.DrawString(text_to_render.c_str(),
-							  (int)text_to_render.size(),
-							  font.get(), box,
-							  &format, &brush);
+			stat = graphics_bitmap.DrawString(
+				text_to_render.c_str(),
+				(int)text_to_render.size(), font.get(), box,
+				&format, &brush);
 			warn_stat("graphics_bitmap.DrawString");
 		}
 	}
@@ -528,8 +530,8 @@ void TextSource::LoadFileText()
 {
 	BPtr<char> file_text = os_quick_read_utf8_file(file.c_str());
 	text = to_wide(GetMainString(file_text));
-	
-	UpdateTextToRender();	
+
+	UpdateTextToRender();
 
 	if (!text.empty() && text.back() != '\n')
 		text.push_back('\n');
@@ -540,13 +542,15 @@ void TextSource::TransformText()
 	const locale loc = locale(obs_get_locale());
 	const ctype<wchar_t> &f = use_facet<ctype<wchar_t>>(loc);
 	if (text_transform == S_TRANSFORM_UPPERCASE)
-		f.toupper(&text_to_render[0], &text_to_render[0] + text_to_render.size());
+		f.toupper(&text_to_render[0],
+			  &text_to_render[0] + text_to_render.size());
 	else if (text_transform == S_TRANSFORM_LOWERCASE)
-		f.tolower(&text_to_render[0], &text_to_render[0] + text_to_render.size());
+		f.tolower(&text_to_render[0],
+			  &text_to_render[0] + text_to_render.size());
 	else if (text_transform == S_TRANSFORM_STARTCASE) {
 		bool upper = true;
-		for (wstring::iterator it = text_to_render.begin(); it != text_to_render.end();
-		     ++it) {
+		for (wstring::iterator it = text_to_render.begin();
+		     it != text_to_render.end(); ++it) {
 			const wchar_t upper_char = f.toupper(*it);
 			const wchar_t lower_char = f.tolower(*it);
 			if (upper && lower_char != upper_char) {
@@ -673,7 +677,7 @@ inline void TextSource::Update(obs_data_t *s)
 	} else {
 		text = to_wide(GetMainString(new_text));
 		UpdateTextToRender();
-	
+
 		/* all text should end with newlines due to the fact that GDI+
 		 * treats strings without newlines differently in terms of
 		 * render size */
@@ -757,7 +761,6 @@ inline void TextSource::Render()
 
 	gs_enable_framebuffer_srgb(previous);
 }
-
 
 void TextSource::UpdateTextToRender()
 {
