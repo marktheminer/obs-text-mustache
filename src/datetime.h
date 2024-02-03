@@ -6,22 +6,22 @@
 #ifndef DATETIME_H
 #define DATETIME_H
 
-std::wstring getCurrentMonthName(const struct tm *  localTime);
+std::wstring getCurrentMonthName(const tm *localTime);
 
-std::wstring getCurrentYear(const struct tm *  localTime);
+std::wstring getCurrentYear(const tm *localTime);
 
-std::wstring getCurrentDay(const struct tm *  localTime);
+std::wstring getCurrentDay(const tm *localTime);
 
-std::wstring getCurrentDayOfWeek(const struct tm *  localTime);
+std::wstring getCurrentDayOfWeek(const tm *localTime);
 
-std::wstring getCurrent24Hour(const struct tm *  localTime);
+std::wstring getCurrent24Hour(const tm *localTime);
 
-std::wstring getCurrent12Hour(const struct tm *  localTime);
+std::wstring getCurrent12Hour(const tm *localTime);
 
-std::wstring getCurrentMinute(const struct tm *  localTime);
+std::wstring getCurrentMinute(const tm *localTime);
 
-std::wstring getCurrentSecond(const struct tm *  localTime);
+std::wstring getCurrentSecond(const tm *localTime);
 
-std::wstring getCurrentAmPm(const struct tm *  localTime);
+std::wstring getCurrentAmPm(const tm *localTime);
 
 #endif //DATETIME_H

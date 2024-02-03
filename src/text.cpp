@@ -10,11 +10,11 @@
 
 using namespace std;
 
-wstring replaceVariables(const wstring& initial)
+wstring replaceVariables(const wstring &initial)
 {
 	wstring text_to_render = initial;
 	VariablesAndValues *variablesAndValues =
-	VariablesAndValues::getInstance();
+		VariablesAndValues::getInstance();
 	const auto variables = variablesAndValues->getVariables();
 	for (auto it = variables.begin(); it != variables.end(); ++it) {
 		const wstring value =
@@ -38,14 +38,15 @@ wstring replaceVariables(const wstring& initial)
 	return text_to_render;
 }
 
-wstring replaceDateTimes(const wstring& initial)
+wstring replaceDateTimes(const wstring &initial)
 {
 	wstring text_to_render = initial;
 	time_t currentTime = time(nullptr);
-	struct tm* localTime = localtime(&currentTime);
+	struct tm *localTime = localtime(&currentTime);
 
-	text_to_render =
-		regex_replace(text_to_render, wregex(L"\\{\\{DateTime month\\}\\}"), getCurrentMonthName(localTime));
+	text_to_render = regex_replace(text_to_render,
+				       wregex(L"\\{\\{DateTime month\\}\\}"),
+				       getCurrentMonthName(localTime));
 	text_to_render = regex_replace(text_to_render,
 				       wregex(L"\\{\\{DateTime month\\}\\}"),
 				       getCurrentMonthName(localTime));
@@ -62,8 +63,8 @@ wstring replaceDateTimes(const wstring& initial)
 				       wregex(L"\\{\\{DateTime hour24\\}\\}"),
 				       getCurrent24Hour(localTime));
 	text_to_render = regex_replace(text_to_render,
-			       wregex(L"\\{\\{DateTime hour12\\}\\}"),
-			       getCurrent12Hour(localTime));
+				       wregex(L"\\{\\{DateTime hour12\\}\\}"),
+				       getCurrent12Hour(localTime));
 	text_to_render = regex_replace(text_to_render,
 				       wregex(L"\\{\\{DateTime minute\\}\\}"),
 				       getCurrentMinute(localTime));
