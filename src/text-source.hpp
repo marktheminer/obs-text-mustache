@@ -1,14 +1,8 @@
-#include <graphics/math-defs.h>
 #include <util/platform.h>
-#include <util/util.hpp>
-#include <obs-module.h>
-#include <sys/stat.h>
 #include <combaseapi.h>
 #include <gdiplus.h>
-#include <algorithm>
 #include <string>
 #include <memory>
-#include <locale>
 #include <plugin-support.h>
 
 using namespace std;

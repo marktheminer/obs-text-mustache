@@ -10,13 +10,12 @@
 #include <set>
 #include <string>
 #include <codecvt>
-#include <iostream>
-#include <sstream>
 #include <regex>
 #include <memory>
 #include <locale>
 #include <plugin-support.h>
 #include "text-source.hpp"
+#include "text.h"
 #include "variables.hpp"
 
 using namespace std;
@@ -764,31 +763,10 @@ inline void TextSource::Render()
 
 void TextSource::UpdateTextToRender()
 {
-	text_to_render = text;
 	blog(LOG_DEBUG, "UpdateTextToRender: initial text_to_render %s",
 	     QString::fromStdWString(text_to_render).toStdString().c_str());
-	VariablesAndValues *variablesAndValues =
-		VariablesAndValues::getInstance();
-	const auto variables = variablesAndValues->getVariables();
-	for (auto it = variables.begin(); it != variables.end(); ++it) {
-		const wstring value =
-			variablesAndValues->getValue(*it).toStdWString();
-		if (value.size() > 0) {
-			const wstring variable = (*it).toStdWString();
-			wstringstream buf;
-			buf << L"\\{\\{" << variable << L"\\}\\}";
-			const wregex re(buf.str());
-			text_to_render =
-				regex_replace(text_to_render, re, value);
-			blog(LOG_DEBUG, "UpdateTextToRender: text_to_render %s",
-			     QString::fromStdWString(text_to_render)
-				     .toStdString()
-				     .c_str());
-		}
-	}
-	blog(LOG_DEBUG, "UpdateTextToRender: final text_to_render %s",
-	     QString::fromStdWString(text_to_render).toStdString().c_str());
-	text_to_render = text_to_render.append(L"\n");
+	text_to_render = replaceVariables(text);
+	text_to_render = replaceDateTimes(text_to_render);
 	RenderText();
 }
 
