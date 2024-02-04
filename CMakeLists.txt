@@ -11,7 +11,7 @@ include(compilerconfig)
 include(defaults)
 include(helpers)
 
-add_library(${CMAKE_PROJECT_NAME} MODULE)
+add_library(${CMAKE_PROJECT_NAME} MODULE src/datetime.cpp src/datetime.h src/text.cpp src/text.h)
 
 find_package(libobs REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::libobs OBS::libobs gdiplus)

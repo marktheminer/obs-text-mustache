@@ -38,7 +38,7 @@
   },
   "name": "obs-text-mustache",
   "displayName": "OBS Text Plugin with Templating",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Mark Jones",
   "website": "https://github.com/marktheminer/obs-text-mustache",
   "email": "mark.jones1112+nospam@gmail.com",

@@ -97,6 +97,8 @@ OBSTextMustacheDefinitions::OBSTextMustacheDefinitions(QWidget *parent)
 	QObject::connect(ui->buttonBox->button(QDialogButtonBox::Close),
 			 &QPushButton::clicked, this,
 			 &OBSTextMustacheDefinitions::HideDialog);
+	QObject::connect(&timer, SIGNAL(timeout()), SLOT(TimerTextUpdate()));
+	timer.start(250);
 }
 
 void OBSTextMustacheDefinitions::closeEvent(QCloseEvent *)
@@ -146,6 +148,12 @@ void OBSTextMustacheDefinitions::HideDialog()
 	obs_enum_sources(updateText, NULL);
 
 	QTimer::singleShot(250, this, &OBSTextMustacheDefinitions::hide);
+}
+
+void OBSTextMustacheDefinitions::TimerTextUpdate()
+{
+	obs_enum_sources(updateText, NULL);
+	timer.start(250);
 }
 
 static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,

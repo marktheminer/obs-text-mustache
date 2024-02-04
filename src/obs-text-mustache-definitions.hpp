@@ -1,10 +1,9 @@
 #pragma once
 
-#include <QDialog>
+#include <QTimer>
 #include <QString>
 #include <QLineEdit>
 #include <memory>
-#include <string>
 #include <map>
 
 #include "ui_obs-text-mustache-definitions.h"
@@ -23,7 +22,9 @@ public:
 public slots:
 	void ShowDialog();
 	void HideDialog();
+	void TimerTextUpdate();
 
 private:
 	std::map<QString, QLineEdit *> textLines;
+	QTimer timer;
 };
