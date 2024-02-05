@@ -110,7 +110,8 @@ void OBSTextMustacheDefinitions::ShowDialog()
 {
 	VariablesAndValues *const variablesAndValues =
 		VariablesAndValues::getInstance();
-
+	ui->gridLayout->setColumnStretch(0, 1);
+	ui->gridLayout->setColumnStretch(1, 2);
 	obs_enum_sources(findVariables, NULL);
 	const auto variables = variablesAndValues->getVariables();
 	int currentRow = 0;
