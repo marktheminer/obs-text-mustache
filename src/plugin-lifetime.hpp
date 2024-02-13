@@ -1,0 +1,2 @@
+bool InitOBSText();
+void FreeOBSText();

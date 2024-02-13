@@ -6,6 +6,8 @@
 #define TEXT_H
 
 #include <string>
+std::wstring evaluateConditionals(const std::wstring &initial);
+
 std::wstring replaceVariables(const std::wstring &initial);
 
 std::wstring replaceDateTimes(const std::wstring &initial);
