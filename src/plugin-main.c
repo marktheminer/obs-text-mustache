@@ -18,13 +18,14 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 
 #include <obs-module.h>
 #include <plugin-support.h>
-#include "obs-text.hpp"
+#include "plugin-lifetime.hpp"
 #include "types.h"
 
 OBS_DECLARE_MODULE()
 OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 
 void InitOBSTextMustacheDefinitions();
+void ResetDialog();
 void FreeOBSTextMustacheDefinitions();
 
 bool obs_module_load(void)

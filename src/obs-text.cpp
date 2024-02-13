@@ -14,7 +14,7 @@
 #include <memory>
 #include <locale>
 #include <plugin-support.h>
-#include "text-source.hpp"
+#include "obs-text.hpp"
 #include "text.h"
 #include "variables.hpp"
 
@@ -765,7 +765,9 @@ void TextSource::UpdateTextToRender()
 {
 	blog(LOG_DEBUG, "UpdateTextToRender: initial text_to_render %s",
 	     QString::fromStdWString(text_to_render).toStdString().c_str());
-	text_to_render = replaceVariables(text);
+	text_to_render = text;
+	text_to_render = evaluateConditionals(text_to_render);
+	text_to_render = replaceVariables(text_to_render);
 	text_to_render = replaceDateTimes(text_to_render);
 	RenderText();
 }

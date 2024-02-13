@@ -8,13 +8,14 @@
 #include <util/util.hpp>
 #include <QAction>
 #include <QMainWindow>
+#include <QDialog>
 #include <QTimer>
 #include <QObject>
 #include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
 #include "obs-text-mustache-definitions.hpp"
-#include "text-source.hpp"
+#include "obs-text.hpp"
 #include "variables.hpp"
 
 using namespace std;
@@ -160,7 +161,7 @@ void OBSTextMustacheDefinitions::TimerTextUpdate()
 static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 					   void *)
 {
-	VariablesAndValues *const variablesAndValues =
+	VariablesAndValues *variablesAndValues =
 		VariablesAndValues::getInstance();
 	if (saving) {
 		const OBSDataAutoRelease obj = obs_data_create();
@@ -169,13 +170,13 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 		for (auto it = variables.begin(); it != variables.end(); ++it) {
 			const QString variable = *it;
 			const QString value = variablesAndValues->getValue(*it);
-			blog(LOG_DEBUG,
+			blog(LOG_INFO,
 			     "SaveOBSTextMustacheDefinitions: Considering saving variable %s",
 			     variable.toStdString().c_str());
 			if (value.size() > 0) {
 				const OBSDataAutoRelease keyValue =
 					obs_data_create();
-				blog(LOG_DEBUG,
+				blog(LOG_INFO,
 				     "SaveOBSTextMustacheDefinitions: Saving variable %s as %s",
 				     variable.toStdString().c_str(),
 				     value.toStdString().c_str());
@@ -188,17 +189,18 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 
 				obs_data_array_push_back(array, keyValue);
 
-				blog(LOG_DEBUG,
+				blog(LOG_INFO,
 				     "SaveOBSTextMustacheDefinitions: Done saving variable %s as %s",
 				     variable.toStdString().c_str(),
 				     value.toStdString().c_str());
 			}
 		}
 		obs_data_set_array(obj, "variablesAndValues", array);
-		blog(LOG_DEBUG,
+		blog(LOG_INFO,
 		     "SaveOBSTextMustacheDefinitions: About to save data");
 		obs_data_set_obj(save_data, "obs-text-mustache", obj);
-		blog(LOG_DEBUG,
+		variablesAndValues->clear();
+		blog(LOG_INFO,
 		     "SaveOBSTextMustacheDefinitions: Done saving data");
 	} else {
 		OBSDataAutoRelease obj =
@@ -206,7 +208,9 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 
 		if (!obj)
 			obj = obs_data_create();
-
+		blog(LOG_INFO,
+		     "SaveOBSTextMustacheDefinitions: loading variables");
+		variablesAndValues->clear();
 		obs_data_array_enum(obs_data_get_array(obj,
 						       "variablesAndValues"),
 				    loadVariablesAndValues, NULL);
@@ -214,6 +218,13 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 }
 
 extern "C" void FreeOBSTextMustacheDefinitions() {}
+
+extern "C" void ResetDialog()
+{
+	QMainWindow *window = (QMainWindow *)obs_frontend_get_main_window();
+
+	dialog = new OBSTextMustacheDefinitions(window);
+}
 
 static void OBSEvent(enum obs_frontend_event event, void *)
 {
@@ -223,6 +234,12 @@ static void OBSEvent(enum obs_frontend_event event, void *)
 		obs_frontend_save();
 		FreeOBSTextMustacheDefinitions();
 		break;
+	}
+	case OBS_FRONTEND_EVENT_SCENE_COLLECTION_CLEANUP: {
+		VariablesAndValues *variablesAndValues =
+			VariablesAndValues::getInstance();
+		variablesAndValues->clear();
+		ResetDialog();
 	}
 	case OBS_FRONTEND_EVENT_FINISHED_LOADING: {
 		obs_enum_sources(updateText, NULL);
@@ -238,10 +255,7 @@ extern "C" void InitOBSTextMustacheDefinitions()
 
 	obs_frontend_push_ui_translation(obs_module_get_string);
 
-	QMainWindow *const window =
-		(QMainWindow *)obs_frontend_get_main_window();
-
-	dialog = new OBSTextMustacheDefinitions(window);
+	ResetDialog();
 
 	const auto cb = []() {
 		dialog->ShowDialog();
