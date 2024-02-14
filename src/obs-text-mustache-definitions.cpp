@@ -199,7 +199,7 @@ static void SaveOBSTextMustacheDefinitions(obs_data_t *save_data, bool saving,
 		blog(LOG_INFO,
 		     "SaveOBSTextMustacheDefinitions: About to save data");
 		obs_data_set_obj(save_data, "obs-text-mustache", obj);
-		variablesAndValues->clear();
+		// variablesAndValues->clear();
 		blog(LOG_INFO,
 		     "SaveOBSTextMustacheDefinitions: Done saving data");
 	} else {
