@@ -33,7 +33,7 @@
   },
   "platformConfig": {
     "macos": {
-      "bundleId": "com.example.obs-plugintemplate"
+      "bundleId": "com.github.marktheminer.obs-text-mustache"
     }
   },
   "name": "obs-text-mustache",
