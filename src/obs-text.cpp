@@ -769,6 +769,7 @@ void TextSource::UpdateTextToRender()
 	text_to_render = evaluateConditionals(text_to_render);
 	text_to_render = replaceVariables(text_to_render);
 	text_to_render = replaceDateTimes(text_to_render);
+	text_to_render = text_to_render.append(L"\n");
 	RenderText();
 }
 
