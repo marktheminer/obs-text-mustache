@@ -58,7 +58,6 @@ wstring evaluateConditionals(const std::wstring &initial)
 			text_to_render = regex_replace(text_to_render, re, L"");
 		}
 	}
-	text_to_render = text_to_render.append(L"\n");
 	return text_to_render;
 }
 
@@ -86,7 +85,6 @@ wstring replaceVariables(const wstring &initial)
 	}
 	blog(LOG_DEBUG, "replaceVariables: final text_to_render %s",
 	     QString::fromStdWString(text_to_render).toStdString().c_str());
-	text_to_render = text_to_render.append(L"\n");
 	return text_to_render;
 }
 
@@ -129,6 +127,5 @@ wstring replaceDateTimes(const wstring &initial)
 
 	blog(LOG_DEBUG, "replaceDateTimes: final text_to_render %s",
 	     QString::fromStdWString(text_to_render).toStdString().c_str());
-	text_to_render = text_to_render.append(L"\n");
 	return text_to_render;
 }
